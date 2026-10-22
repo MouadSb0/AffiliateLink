@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: affiliatelink-platform
+
+  # Configuration Docker Compose intégrée de Spring Boot
+  # Spring Boot détecte automatiquement compose.yaml / docker-compose.yml,
+  # démarre le conteneur PostgreSQL au lancement et applique les variables de connexion.
+  docker:
+    compose:
+      enabled: true
+      lifecycle-management: start-and-stop
+      file: docker-compose.yml
+
+  # Configuration de la source de données PostgreSQL
+  datasource:
+    url: jdbc:postgresql://localhost:5432/affiliatelink
+    username: affiliatelink
+    password: affiliatelink
+    driver-class-name: org.postgresql.Driver
+
+  # Configuration JPA / Hibernate
+  jpa:
+    # Exigence du brief : Hibernate valide strictement que les entités correspondent au schéma Flyway
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Configuration Flyway pour la migration du schéma
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
